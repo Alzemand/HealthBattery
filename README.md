@@ -10,5 +10,5 @@ Tested OS:
 - Ubuntu 21.10
 - Fedora 36
 
-If you want to run this script on startup check this article: https://www.baeldung.com/linux/run-script-on-startup
+If you want to run this script on startup check this article: https://www.baeldung.com/linux/run-script-on-startup.
 Extention for gnome will arrive soon.
