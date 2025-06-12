@@ -8,6 +8,7 @@ def main(argv):
     
     if argv and (argv[0] == "-s" or argv[0] == "--show"):
         show()
+        
     elif argv and (argv[0] == "-l" or argv[0] == "--level") and os.getuid() == 0:
         if len(argv) < 2:
             print("Missing battery level parameter.")
@@ -20,16 +21,15 @@ def main(argv):
 
 def set(level: int):
     if level > 19 and level <= 100:    
-        os.system(f"echo {level} | sudo tee /sys/class/power_supply/BAT1/charge_control_end_threshold")
-        show()
+        os.system(f"echo {level} | sudo tee /sys/class/power_supply/BAT1/charge_control_end_threshold > /dev/null")
+        print(f"Battery level set to {level}%")
        
     else:
         print("Battery level must be between 20 and 100")
         sys.exit(1)
 
 def show():
-    print("Battery level setted to")
-    os.system("cat /sys/class/power_supply/BAT1/charge_control_end_threshold")
+    print(f"Battery level setted to {os.popen('cat /sys/class/power_supply/BAT1/charge_control_end_threshold').read().strip()}%")
     sys.exit(1)
 
 def help():
@@ -37,7 +37,7 @@ def help():
     print("-l accepts one parameter between 20 and 100")
     print("that represents the max battery charge level\n")
     print("Example: ")
-    print(f"sudo {sys.argv[0]} -l 60")
+    print(f"sudo healthbattery -l 60")
     print("this sets max battery level to 60% to preserve battery health")
     sys.exit(1)
 
